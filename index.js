@@ -1,7 +1,14 @@
 const inquirer = require("inquirer");
 const asciiartLogo = require("asciiart-logo");
 require("console.table");
-const dataBase = require("./db");
+const DataBase = require("./db/index.js");
+
+// ////////////////do i need this??
+// const router = require('express').Router();
+// const apiRoutes = require('./api');
+// router.use('/api', apiRoutes);
+// module.exports = router;
+
 
 // WHEN I start the application
 const init = async () => {
@@ -49,7 +56,7 @@ const callActions = ( option ) => {
             addEmployee();
             break;    
         case "UPDATE_EMPLOYEE_ROLE":
-            UpdateEmployeeole();
+            uupdateEmployeeRole();
             break;
         case "QUIT":
             quit();
@@ -59,22 +66,93 @@ const callActions = ( option ) => {
 
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
-
+const viewDepartament = async () => {
+    const response = await DataBase.viewDepartament()
+    console.table(response);
+    option()
+};
 // WHEN I choose to view all roles;;;;
 // THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
-
+const viewRoles = async () => {
+    const response = await DataBase.viewRoles()
+    console.table(response);
+    option()
+};
 // WHEN I choose to view all employees
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 
 // WHEN I choose to add a department
 // THEN I am prompted to enter the name of the department and that department is added to the database
+const addDepartament = async () =>{
+    const { departament_name } =  await inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter the department name',
+            name: 'departament_name',
+            validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+        }
+    ])
+
+    await DataBase.addDepartament(departament_name)
+
+    const reposne = DataBase.viewDepartament()
+    
+    console.table(response);
+    
+    option()
+
+}
 
 // WHEN I choose to add a role
 // THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
-
+// const addRole =  await inquirer.prompt([
+//     {
+//         type: 'input',
+//         message: 'Enter the role name',
+//         name: 'roleName',
+//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+//     },
+//     {
+//         type: 'input',
+//         message: 'Enter the salary',
+//         name: 'salary',
+//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+//     }
+//     {
+//         type: 'input',
+//         message: 'Enter the department for this role',
+//         name: 'roleDepartment',
+//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+//     }
+// ])
 // WHEN I choose to add an employee
 // THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-
+// const addEmployee =  await inquirer.prompt([
+//     {
+//         type: 'input',
+//         message: 'Enter the first name of the employee',
+//         name: 'emplfname',
+//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+//     },
+//     {
+//         type: 'input',
+//         message: 'Enter the last name of the employee',
+//         name: 'emplastname',
+//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+//     },
+//     {
+//         type: 'input',
+//         message: 'Enter the role name',
+//         name: 'roleName',
+//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+//     }
+//     {
+//         type: 'input',
+//         message: 'Enter manager name',
+//         name: 'managerName',
+//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+//     }
+// ])
 // WHEN I choose to update an employee role
 // THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
 

@@ -8,24 +8,21 @@ id INT AUTO_INCREMENT PRIMARY KEY,
 department_name VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE empl_role (
+CREATE TABLE role (
 id INT AUTO_INCREMENT PRIMARY KEY,
-role_title VARCHAR(30) NOT NULL,
-salary DECIMAL(4,2),
-department_id INT,
-FOREIGN KEY (department_id)
-REFERENCES department(id)
-ON DELETE SET NULL
+title VARCHAR(30) NOT NULL,
+salary DECIMAL(6,2) NOT NULL,
+department_id INT NOT NULL,
+CONSTRAINT fk_department_id FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE CASCADE
 );
 
 CREATE TABLE employee (
-id INT AUTO_INCREMENT PRIMARY KEY,
-first_name VARCHAR(30),
-last_name VARCHAR(30)
-role_id INT,
-FOREIGN KEY (role_id)
-REFERENCES empl_role(id)
-ON DELETE SET NULL,
-maager_id INT,
+id INT  AUTO_INCREMENT PRIMARY KEY,
+first_name VARCHAR(30) NOT NULL,
+last_name VARCHAR(30) NOT NULL,
+role_id INT NOT NULL,
+CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE CASCADE,
+manager_id INT ,
+CONSTRAINT fk_manager_id FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 --   * `manager_id`: `INT` to hold reference to another employee that is the manager of the current employee (`null` if the employee has no manager)--
 );
