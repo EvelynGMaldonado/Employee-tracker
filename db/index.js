@@ -7,7 +7,7 @@ class DataBase {
     constructor(connection) {
         this.connection = connection
     }
-   viewDepartament () {
+    viewDepartament () {
         return this.connection.promise().query(
             `SELECT * FROM DEPARTMENT`
         )
