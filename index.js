@@ -20,7 +20,7 @@ const options = async () =>{
             type: 'list',
             message: 'What would you like to do?',
             name: 'option',
-            choices: ["VIEW_DEPARTAMENTS", "VIEW_ROLES", "VIEW_EPLOYEES", "ADD_DEPARTMENT", "ADD_ROLE", "ADD_EMPLOYEE", "UPDATE_EMPLOYEE_ROLE", "QUIT"],
+            choices: ["VIEW_DEPARTAMENTS", "VIEW_ROLES", "VIEW_EMPLOYEES", "ADD_DEPARTMENT", "ADD_ROLE", "ADD_EMPLOYEE", "UPDATE_EMPLOYEE_ROLE", "QUIT"],
             validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
         
         }
@@ -61,23 +61,25 @@ const callActions = ( option ) => {
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
 const viewDepartament = async () => {
-    const response = await db.viewDepartament()
-    console.table(response);
+    //to deconstruct an array and in this case I am taking the array 0
+    const [ departaments ] = await db.viewDepartament()
+    
+    console.table(departaments);
     options();
 };
 // WHEN I choose to view all roles;;;;
 // THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
 const viewRoles = async () => {
-    const response = await db.viewRoles()
-    console.table(response);
+    const [ roles ] = await db.viewRoles()
+    console.table(roles);
     options();
 };
 // WHEN I choose to view all employees
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
 const viewEmployees = async () => {
-    const response = await DataBase.viewRoles()
-    console.table(response);
-    options()
+    const [ employees ] = await db.viewEmployees()
+    console.table(employees);
+    options();
 };
 // WHEN I choose to add a department
 // THEN I am prompted to enter the name of the department and that department is added to the database
@@ -91,13 +93,12 @@ const addDepartament = async () =>{
         }
     ])
 
-    await db.addDepartament(departament_name)
+    await db.addDepartment(departament_name)
 
-    const reposne = db.viewDepartament()
+    const reposne = await db.viewDepartament()
+    console.log(response)
     
-    console.table(response);
-    
-    options();
+    viewDepartament();
 
 }
 
