@@ -1,13 +1,7 @@
+const db = require("./db");
 const inquirer = require("inquirer");
 const asciiartLogo = require("asciiart-logo");
 require("console.table");
-const DataBase = require("./db/index.js");
-
-// ////////////////do i need this??
-// const router = require('express').Router();
-// const apiRoutes = require('./api');
-// router.use('/api', apiRoutes);
-// module.exports = router;
 
 
 // WHEN I start the application
@@ -61,22 +55,22 @@ const callActions = ( option ) => {
         case "QUIT":
             quit();
             break;                                    
-}
+    }
 }
 
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
 const viewDepartament = async () => {
-    const response = await DataBase.viewDepartament()
+    const response = await db.viewDepartament()
     console.table(response);
-    option()
+    options();
 };
 // WHEN I choose to view all roles;;;;
 // THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
 const viewRoles = async () => {
-    const response = await DataBase.viewRoles()
+    const response = await db.viewRoles()
     console.table(response);
-    option()
+    options();
 };
 // WHEN I choose to view all employees
 // THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
@@ -93,13 +87,13 @@ const addDepartament = async () =>{
         }
     ])
 
-    await DataBase.addDepartament(departament_name)
+    await db.addDepartament(departament_name)
 
-    const reposne = DataBase.viewDepartament()
+    const reposne = db.viewDepartament()
     
     console.table(response);
     
-    option()
+    options();
 
 }
 

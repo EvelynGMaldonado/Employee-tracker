@@ -1,13 +1,14 @@
 
 //TODO CLass for database
 
-const connection = require("../config/connection-to-database");
+const connection = require("./connection-to-database");
 
-class DataBase {
+class DBase {
     constructor(connection) {
         this.connection = connection
     }
-   viewDepartament () {
+
+    viewDepartament () {
         return this.connection.promise().query(
             `SELECT * FROM DEPARTMENT`
         )
@@ -22,13 +23,13 @@ class DataBase {
     
     viewEmployees() {
         return this.connection.promise().query(
-            `SELECT * FROM EMPLOYEE`
+            `SELECT * FROM EMPLOYEE`join 3ish
         )
 
     }
 
     addDepartment(){
-
+        INSERT or SET
     }
 
     addRole () {
@@ -40,8 +41,8 @@ class DataBase {
     }
 
     updateEmployeeRole() {
-
+        `UPDATE table SET manager_id WHERE id = `
     }
 
 }
-module.exports = new DataBase;
+module.exports = new DBase(connection);
