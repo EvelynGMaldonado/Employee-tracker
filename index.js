@@ -138,32 +138,57 @@ const addRole =  async () => {
 
 // WHEN I choose to add an employee
 // THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-// const addEmployee =  await inquirer.prompt([
-//     {
-//         type: 'input',
-//         message: 'Enter the first name of the employee',
-//         name: 'emplfname',
-//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//     },
-//     {
-//         type: 'input',
-//         message: 'Enter the last name of the employee',
-//         name: 'emplastname',
-//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//     },
-//     {
-//         type: 'input',
-//         message: 'Enter the role name',
-//         name: 'roleName',
-//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//     },
-//     {
-//         type: 'input',
-//         message: 'Enter manager name',
-//         name: 'managerName',
-//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//     }
-// ])
+
+const addEmployee = async() => {
+    const [ roles ] = await db.viewRoles();
+    const [employees] = await db.viewEmployees();
+    // console.log(roles);
+    // console.log(employees);
+    const {first_name, last_name, role_id, manager_id} = await inquirer.prompt([
+    {
+        type: 'input',
+        message: 'Enter the first name of the employee',
+        name: 'first_name',
+        validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+    },
+    {
+        type: 'input',
+        message: 'Enter the last name of the employee',
+        name: 'last_name',
+        validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+    },
+    {
+        type: 'list',
+        message: 'Enter the role',
+        name: 'role_id',
+        choices: roles.map(({Title, id}) =>{
+            return {
+                name:Title,
+                value: id
+            }
+        }),
+        validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+    },
+    {
+        type: 'list',
+        message: 'Enter manager name',
+        name: 'manager_id',
+        choices: employees.map(({Employee_Name, id})=>{
+
+            return {
+                name: Employee_Name,
+                value: id
+            }
+        }),
+        validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+    }
+])     
+    console.log(first_name, last_name, role_id, manager_id);
+    await db.addEmployee(first_name, last_name, role_id, manager_id);
+    viewEmployees();
+}
+
+
 // WHEN I choose to update an employee role
 // THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
 // const updateEmployeeRole = async () =>{

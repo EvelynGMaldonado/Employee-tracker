@@ -27,12 +27,12 @@ class DBase {
         return this.connection.promise().query(
             `SELECT em.id, concat(em.first_name," ", em.last_name) as Employee_Name, r.title as Title, r.salary as Salary, d.department_name as Department, concat(e.first_name," ", e.last_name) as Manager_Name
             FROM employee em
-            INNER JOIN role r
+            LEFT JOIN role r
             ON em.role_id = r.id
             LEFT JOIN department d
             ON r.department_id = d.id
             LEFT JOIN employee e
-            ON em.id = e.id
+            ON em.manager_id = e.id
             ORDER BY em.id
             `
         )
