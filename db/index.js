@@ -39,15 +39,24 @@ class DBase {
 
     }
 
-    addDepartment(){
+    addDepartment(department_name){
+        return this.connection.promise().query(
+            `INSERT INTO department SET ? `, {department_name}
+        )
         // INSERT or SET
     }
 
-    addRole () {
+    addRole (title, salary, department_id) {
+        return this.connection.promise().query(
+            `INSERT INTO role SET ? `, {title, salary, department_id}
+        )
 
     }
 
-    addEmployee () {
+    addEmployee (first_name, last_name, role_id, manager_id) {
+        return this.connection.promise().query(
+            `INSERT INTO employee SET ? `, {first_name, last_name, role_id, manager_id}
+        )
 
     }
 

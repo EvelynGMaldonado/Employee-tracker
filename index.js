@@ -94,9 +94,6 @@ const addDepartament = async () =>{
     ])
 
     await db.addDepartment(departament_name)
-
-    const reposne = await db.viewDepartament()
-    console.log(response)
     
     viewDepartament();
 
@@ -104,27 +101,41 @@ const addDepartament = async () =>{
 
 // WHEN I choose to add a role
 // THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
-// const addRole =  await inquirer.prompt([
-//     {
-//         type: 'input',
-//         message: 'Enter the role name',
-//         name: 'title',
-//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//     },
-//     {
-//         type: 'input',
-//         message: 'Enter the salary',
-//         name: 'salary',
-//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//     }
-//     {
-//         type: 'input',
-//         message: 'Enter the department for this role',
-//         name: 'department_name',
-//         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//     }
-// ])
-// await DataBase.addRole(title, salary)
+const addRole =  async () => {
+    const [ departaments ] = await db.viewDepartament()
+
+    const {title, salary, department_id} = await inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Enter the role name',
+            name: 'title',
+            validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+        },
+        {
+            type: 'input',
+            message: 'Enter the salary',
+            name: 'salary',
+            validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+        },
+        {
+            type: 'list',
+            message: 'Enter the department for this role',
+            name: 'department_id',
+            choices: departaments.map(({id, department_name}) =>{
+                return {
+                    name: department_name,
+                    value: id
+                }
+            }),
+            validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+        }
+    ])
+    await db.addRole(title, salary, department_id);
+    viewRoles();
+}
+
+
+
 // WHEN I choose to add an employee
 // THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
 // const addEmployee =  await inquirer.prompt([
