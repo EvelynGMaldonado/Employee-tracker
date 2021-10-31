@@ -1,6 +1,7 @@
 const db = require("./db");
 const inquirer = require("inquirer");
 const asciiartLogo = require("asciiart-logo");
+const { quit } = require("./db");
 require("console.table");
 
 
@@ -50,10 +51,10 @@ const callActions = ( option ) => {
             addEmployee();
             break;    
         case "UPDATE_EMPLOYEE_ROLE":
-            uupdateEmployeeRole();
+            updateEmployeeRole();
             break;
         case "QUIT":
-            quit();
+            db.quit();
             break;                                    
     }
 }
@@ -62,7 +63,7 @@ const callActions = ( option ) => {
 // THEN I am presented with a formatted table showing department names and department ids
 const viewDepartament = async () => {
     //to deconstruct an array and in this case I am taking the array 0
-    const [ departaments ] = await db.viewDepartament()
+    const [ departaments ] = await db.viewDepartament();
     
     console.table(departaments);
     options();
@@ -191,30 +192,43 @@ const addEmployee = async() => {
 
 // WHEN I choose to update an employee role
 // THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
-// const updateEmployeeRole = async () =>{
-//     const { departament_name } =  await inquirer.prompt([
-//         {
-//             type: 'input',
-//             message: 'Enter your employee id',
-//             name: 'employeeId',
-//             validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//         },
-// /       {
-    //         type: 'input',
-    //         message: 'Enter the role name',
-    //         name: 'roleName',
-    //         validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-//          }
-
-//     ])
-
-//     await DataBase.updateEmployeeRole(departament_name)
-
-//     const response = DataBase.viewDepartament()
+const updateEmployeeRole = async () =>{
+    const [ roles ] = await db.viewRoles();
+    const [employees] = await db.viewEmployees();
+    const { employee_id, role_id } =  await inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Which employee whould you like to update the role for?',
+            name: 'employee_id',
+            choices: employees.map(({Employee_Name, id})=>{
     
-//     console.table(response);
-    
-//     options()
+                return {
+                    name: Employee_Name,
+                    value: id
+                }
+            }),
+            validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+        },
+        {
+            type: 'list',
+            message: 'Enter the role',
+            name: 'role_id',
+            choices: roles.map(({Title, id}) =>{
+                return {
+                    name:Title,
+                    value: id
+                }
+            }),
+            validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
+        }
 
-// }
+
+    ])
+
+    await db.updateEmployeeRole(employee_id, role_id);
+
+    viewEmployees();
+
+}
+
 init();

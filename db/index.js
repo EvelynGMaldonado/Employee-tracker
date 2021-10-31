@@ -60,8 +60,14 @@ class DBase {
 
     }
 
-    updateEmployeeRole() {
-        `UPDATE table SET manager_id WHERE id = `
+    updateEmployeeRole(id, role_id) {
+        return this.connection.promise().query(
+            `UPDATE employee SET ? WHERE ? `, [{role_id}, {id}]
+        )
+    }
+    
+    quit(){
+        connection.end();
     }
 
 }
