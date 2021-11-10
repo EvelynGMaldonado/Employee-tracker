@@ -36,4 +36,4 @@ If you have any questions, please contact me at the information listed below.
 [Employee Managment System](https://github.com/EvelynGMaldonado/Employee-tracker)
 
 * Url to the walkthrough video:
-[Employee Tracker-CMS]()
+[Employee Tracker-CMS](https://drive.google.com/file/d/11VXKTjWNcfCRymNDuuB4z0sEHm7QxxfH/view)
